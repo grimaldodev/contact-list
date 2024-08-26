@@ -65,7 +65,7 @@ export default function Home() {
         });
     }, [containerRef.current]);
     return (
-        <div className="container flex flex-col align-items-center mx-auto h-screen">
+        <div className="container flex flex-col items-center mx-auto h-screen">
             <div className="flex flex-row w-3/5 mb-4">
                 <div className="basis-1/2 text-2xl font-bold">Customer List</div>
                 <div className="basis-1/2">
