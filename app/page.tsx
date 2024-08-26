@@ -12,7 +12,7 @@ export default function Home() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [rawData, setRawData] = useState<iList>([] as iList);
     const [loading, setLoading] = useState<boolean>(true);
-    const [searchQuery, setSearchQuery] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string | number | string[] | undefined>(undefined);
     const [modalContent, setModalContent] = useState<iItem | null>(null);
     const [listSize, setListSize] = useState<iListSize>({
         width: 100,
@@ -22,7 +22,7 @@ export default function Home() {
 
     const parsedData: iList = useMemo<iList>((): iList => {
         if (searchQuery) {
-            const regExp = new RegExp(searchQuery, 'i');
+            const regExp = new RegExp(searchQuery as string, 'i');
             return rawData?.filter(item => {
                 if (regExp.test(item.name)) {
                     return item;

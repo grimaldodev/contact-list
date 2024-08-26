@@ -1,6 +1,6 @@
-import { ModalProps } from '../interfaces/modal.interfaces';
+import { iModal } from '../interfaces/modal.interfaces';
 
-export default function Modal(props: ModalProps) {
+export default function Modal(props: iModal) {
     const { content, closeModalHandler } = props;
     const handleCloseBtn = () => {
         if (closeModalHandler) {

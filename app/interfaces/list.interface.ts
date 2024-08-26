@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ListChildComponentProps } from 'react-window';
 
 export interface iItem {
@@ -17,4 +18,9 @@ export interface iListSize {
 
 export interface iRow extends ListChildComponentProps {
     openModalHandler?: (item: string | number) => void;
+}
+
+export interface iCell {
+    className?: string;
+    children: string | number | ReactNode;
 }

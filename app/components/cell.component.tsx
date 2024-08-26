@@ -1,10 +1,5 @@
-import { ReactNode } from 'react';
+import { iCell } from '../interfaces/list.interface';
 
-type CellProps = {
-    className?: string;
-    children: string | number | ReactNode;
-};
-
-export default function Cell({ className = 'cell', children }: CellProps) {
+export default function Cell({ className = 'cell', children }: iCell) {
     return <div className={className}>{children}</div>;
 }

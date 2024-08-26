@@ -1,6 +1,6 @@
 import { iItem } from './list.interface';
 
-export interface ModalProps {
+export interface iModal {
     content: iItem;
     closeModalHandler?: () => void;
 }
