@@ -22,5 +22,17 @@ export interface iRow extends ListChildComponentProps {
 
 export interface iCell {
     className?: string;
-    children: string | number | ReactNode;
+    children?: string | number | ReactNode;
 }
+
+export interface iHeader extends iCell {
+    sortHandler?: (props: iSortHandler) => void;
+}
+
+export interface iSortHandler {
+    origin: SortOrigin;
+    direction: SortDirection;
+}
+
+export type SortDirection = 'ASC' | 'DESC' | null;
+export type SortOrigin = 'name' | 'email' | 'phone' | 'gender' | null;

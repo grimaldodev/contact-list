@@ -16,7 +16,7 @@ export const GET = async (request: NextRequest, response: NextResponse) => {
     const { searchParams } = request.nextUrl;
     const quantity = parseInt(searchParams.get('q') || '') || randNumber({ max: 100 });
 
-    for (let indx = 0; indx <= quantity; indx++) {
+    for (let indx = 0; indx < quantity; indx++) {
         contacts.push(createRandomContact());
     }
 

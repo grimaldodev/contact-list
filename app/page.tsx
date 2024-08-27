@@ -1,10 +1,11 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FixedSizeList as Grid } from 'react-window';
+import Header from './components/header.component';
 import Modal from './components/modal.component';
 import Row from './components/row.component';
 import Search from './components/search.component';
-import { iItem, iList, iListSize } from './interfaces/list.interface';
+import { iItem, iList, iListSize, iSortHandler, SortDirection, SortOrigin } from './interfaces/list.interface';
 import ListService from './services/list.service';
 
 export default function Home() {
@@ -12,6 +13,8 @@ export default function Home() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [rawData, setRawData] = useState<iList>([] as iList);
     const [loading, setLoading] = useState<boolean>(true);
+    const [sortOrigin, setSortOrigin] = useState<SortOrigin>(null);
+    const [sortDirection, setSortDirection] = useState<SortDirection>('DESC');
     const [searchQuery, setSearchQuery] = useState<string | number | string[] | undefined>(undefined);
     const [modalContent, setModalContent] = useState<iItem | null>(null);
     const [listSize, setListSize] = useState<iListSize>({
@@ -21,19 +24,29 @@ export default function Home() {
     });
 
     const parsedData: iList = useMemo<iList>((): iList => {
+        let response: iList = rawData;
         if (searchQuery) {
             const regExp = new RegExp(searchQuery as string, 'i');
-            return rawData?.filter(item => {
+            response = rawData?.filter(item => {
                 if (regExp.test(item.name)) {
                     return item;
                 }
             });
         }
-        return rawData;
-    }, [rawData, searchQuery]);
+
+        if (sortOrigin) {
+            if (sortDirection === 'ASC') {
+                response.sort((a, b) => (a[sortOrigin] > b[sortOrigin] ? -1 : 1));
+            } else {
+                response.sort((a, b) => (a[sortOrigin] < b[sortOrigin] ? -1 : 1));
+            }
+        }
+
+        return response;
+    }, [rawData, searchQuery, sortOrigin, sortDirection]);
 
     const fetchList = useCallback(async () => {
-        await ListService.getList().then(data => {
+        await ListService.getList(10000).then(data => {
             setLoading(false);
             setRawData(data);
         });
@@ -45,6 +58,11 @@ export default function Home() {
 
     const openModalHandler = (item: string | number) => {
         setModalContent(rawData[item as number]);
+    };
+
+    const sortHandler = (props: iSortHandler): void => {
+        setSortDirection(props.direction);
+        setSortOrigin(props.origin);
     };
 
     useEffect(() => {
@@ -74,11 +92,19 @@ export default function Home() {
             </div>
             <div className="flex flex-col w-3/5 h-3/5" ref={containerRef}>
                 <div className="flex flex-row gap-2 px-4 py-1 text-xs mb-3">
-                    <div className="basis-1/5">Name</div>
-                    <div className="basis-2/5">Email</div>
-                    <div className="basis-1/5">Phone</div>
-                    <div className="grow-0 w-20">Gender</div>
-                    <div className="grow-0 w-10"></div>
+                    <Header className="basis-1/5" sortHandler={sortHandler}>
+                        Name
+                    </Header>
+                    <Header className="basis-2/5" sortHandler={sortHandler}>
+                        Email
+                    </Header>
+                    <Header className="basis-1/5" sortHandler={sortHandler}>
+                        Phone
+                    </Header>
+                    <Header className="grow-0 w-20" sortHandler={sortHandler}>
+                        Gender
+                    </Header>
+                    <Header className="grow-0 w-10">{''}</Header>
                 </div>
                 {loading ? <>Loading...</> : null}
                 <Grid
