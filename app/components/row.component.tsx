@@ -19,7 +19,10 @@ export default function Row(props: iRow) {
                 <Cell className="basis-2/5">{item.email}</Cell>
                 <Cell className="basis-1/5">{item.phone}</Cell>
                 <Cell className="grow-0 w-20">
-                    <span className={`rounded-full px-3 py-1 ${bgColor} ${txtColor}`}>{item.gender}</span>
+                    <span className={`rounded-full px-3 py-1 ${bgColor} ${txtColor}`}>{`${item.gender.slice(
+                        0,
+                        5
+                    )}...`}</span>
                 </Cell>
                 <Cell className="grow-0 w-10">
                     <button

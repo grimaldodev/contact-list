@@ -1,6 +1,7 @@
 const ListService = {
-    getList: async () => {
-        const requestURI = process.env.NEXT_PUBLIC_REQUEST_URI || '';
+    getList: async (quantity?: number) => {
+        const contactsURI = `${process.env.NEXT_PUBLIC_REQUEST_URI}/contacts`;
+        const requestURI = quantity ? `${contactsURI}?q=${quantity}` : contactsURI;
 
         const request = new Request(requestURI, {
             method: 'GET',
